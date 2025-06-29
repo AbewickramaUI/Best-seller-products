@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>eBay Demo - All Features with Out-of-Stock</title>
+  <meta charset="UTF-8" />
+  <title>eBay Demo - All Features</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
     }
-    .hidden {
-      display: none;
-    }
-    .product, .related-products, .product-detail {
-      margin-top: 20px;
-    }
+    .hidden { display: none; }
+    .product, .related-products, .product-detail { margin-top: 20px; }
     .related-products {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -37,9 +33,7 @@
       font-size: 14px;
       color: #555;
     }
-    .out-of-stock {
-      display: none;
-    }
+    .out-of-stock { display: none; }
     .message {
       color: #a00;
       font-style: italic;
@@ -85,12 +79,25 @@
       const productPrice = document.getElementById('main-price');
       const detailTitle = document.getElementById('detail-title');
 
+      // Reset all views
       mainProduct.classList.add('hidden');
       relatedProducts.classList.add('hidden');
       relatedHeader.classList.add('hidden');
       noRelatedMsg.classList.add('hidden');
       detailView.classList.add('hidden');
       relatedProducts.innerHTML = '';
+
+      // ✅ Special hash for TC09
+      if (window.location.hash.includes('#norelated')) {
+        productTitle.textContent = 'No Product';
+        productImg.src = '';
+        productImg.alt = '';
+        productCategory.textContent = '';
+        productPrice.textContent = '';
+        mainProduct.classList.remove('hidden');
+        noRelatedMsg.classList.remove('hidden');
+        return;
+      }
 
       if (query === 'leather wallet') {
         productTitle.textContent = 'Leather Wallet';
@@ -114,7 +121,7 @@
         if (fallbackTest) {
           items.push(
             { title: '', price: 4800 }, // missing name
-            { title: 'Fallback Wallet', price: 4700, missingImage: true } // missing image
+            { title: 'Fallback Wallet', price: 4700, missingImage: true }
           );
         }
 
@@ -123,7 +130,6 @@
           div.className = 'related-item' + (item.outOfStock ? ' out-of-stock' : '');
 
           let content = '';
-
           if (!item.title || item.missingImage) {
             content = `<div class="fallback">⚠️ Missing Info</div>`;
           } else {
@@ -161,7 +167,33 @@
         productCategory.textContent = 'Category: Watches';
         productPrice.textContent = 'Price: Rs. 15000.00';
         mainProduct.classList.remove('hidden');
-        noRelatedMsg.classList.remove('hidden');
+
+        const item = {
+          title: 'Silver Wrist Watch',
+          price: 14900
+        };
+
+        const div = document.createElement('div');
+        div.className = 'related-item';
+        div.innerHTML = `
+          <p class="title">${item.title}</p>
+          <p class="category">Watches</p>
+          <p class="price">Rs. ${item.price.toFixed(2)}</p>
+          <span class="tag">Best Seller</span>
+          <img src="https://via.placeholder.com/100x75?text=${encodeURIComponent(item.title)}" />
+        `;
+
+        div.addEventListener('click', () => {
+          mainProduct.classList.add('hidden');
+          relatedProducts.classList.add('hidden');
+          relatedHeader.classList.add('hidden');
+          detailView.classList.remove('hidden');
+          detailTitle.textContent = item.title;
+        });
+
+        relatedProducts.appendChild(div);
+        relatedHeader.classList.remove('hidden');
+        relatedProducts.classList.remove('hidden');
       }
     }
   </script>
