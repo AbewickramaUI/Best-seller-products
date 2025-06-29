@@ -3,13 +3,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>eBay Demo - Product Click</title>
+  <title>eBay Demo - Sorted Related Products</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
     .hidden { display: none; }
-    .product, .related-products, .product-detail { margin-top: 20px; }
+    .product, .related-products { margin-top: 20px; }
     .related-products { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
-    .related-item, .product-detail { border: 1px solid #ccc; padding: 10px; text-align: center; border-radius: 4px; box-shadow: 2px 2px 6px #eee; }
+    .related-item { border: 1px solid #ccc; padding: 10px; text-align: center; border-radius: 4px; box-shadow: 2px 2px 6px #eee; }
     .tag { background: gold; color: black; font-weight: bold; padding: 2px 5px; font-size: 12px; }
     .category, .price { font-size: 14px; color: #555; }
   </style>
@@ -20,7 +20,7 @@
 <input id="search-bar" type="text" placeholder="Search for a product like 'Leather Wallet'" />
 <button onclick="performSearch()">Search</button>
 
-<!-- Main product section -->
+<!-- Main product -->
 <div id="main-product" class="product hidden">
   <h2 id="product-title">Leather Wallet</h2>
   <img src="https://via.placeholder.com/200x150?text=Wallet" alt="Leather Wallet" />
@@ -28,75 +28,54 @@
   <p class="price">Price: Rs. 5000.00</p>
 </div>
 
-<!-- Related product section -->
+<!-- Related products -->
 <h2 id="related-header" class="hidden">Best Seller Related Products</h2>
 <div id="related-products" class="related-products hidden">
-  <div class="related-item" onclick="openProductDetail('Brown Slim Wallet')">
-    <p class="title">Brown Slim Wallet</p>
-    <p class="category">Wallets</p>
-    <p class="price">Rs. 4800.00</p>
-    <span class="tag">Best Seller</span>
-  </div>
-  <div class="related-item" onclick="openProductDetail('Black Classic Wallet')">
+  <div class="related-item">
     <p class="title">Black Classic Wallet</p>
     <p class="category">Wallets</p>
     <p class="price">Rs. 5200.00</p>
     <span class="tag">Best Seller</span>
   </div>
-  <div class="related-item" onclick="openProductDetail('Compact Travel Wallet')">
-    <p class="title">Compact Travel Wallet</p>
-    <p class="category">Wallets</p>
-    <p class="price">Rs. 5000.00</p>
-    <span class="tag">Best Seller</span>
-  </div>
-  <div class="related-item" onclick="openProductDetail('Zipper Wallet')">
-    <p class="title">Zipper Wallet</p>
-    <p class="category">Wallets</p>
-    <p class="price">Rs. 4900.00</p>
-    <span class="tag">Best Seller</span>
-  </div>
-  <div class="related-item" onclick="openProductDetail('Leather Chain Wallet')">
+  <div class="related-item">
     <p class="title">Leather Chain Wallet</p>
     <p class="category">Wallets</p>
     <p class="price">Rs. 5100.00</p>
     <span class="tag">Best Seller</span>
   </div>
-  <div class="related-item" onclick="openProductDetail('Minimalist Wallet')">
+  <div class="related-item">
+    <p class="title">Compact Travel Wallet</p>
+    <p class="category">Wallets</p>
+    <p class="price">Rs. 5000.00</p>
+    <span class="tag">Best Seller</span>
+  </div>
+  <div class="related-item">
     <p class="title">Minimalist Wallet</p>
     <p class="category">Wallets</p>
     <p class="price">Rs. 4950.00</p>
     <span class="tag">Best Seller</span>
   </div>
-</div>
-
-<!-- Product detail section (simulated) -->
-<div id="product-detail" class="product-detail hidden">
-  <h2 id="detail-title"></h2>
-  <p>This is a simulated product detail view.</p>
+  <div class="related-item">
+    <p class="title">Zipper Wallet</p>
+    <p class="category">Wallets</p>
+    <p class="price">Rs. 4900.00</p>
+    <span class="tag">Best Seller</span>
+  </div>
+  <div class="related-item">
+    <p class="title">Brown Slim Wallet</p>
+    <p class="category">Wallets</p>
+    <p class="price">Rs. 4800.00</p>
+    <span class="tag">Best Seller</span>
+  </div>
 </div>
 
 <script>
   function performSearch() {
     const value = document.getElementById('search-bar').value.trim().toLowerCase();
-    if (value === 'leather wallet') {
-      document.getElementById('main-product').classList.remove('hidden');
-      document.getElementById('related-products').classList.remove('hidden');
-      document.getElementById('related-header').classList.remove('hidden');
-      document.getElementById('product-detail').classList.add('hidden');
-    } else {
-      document.getElementById('main-product').classList.add('hidden');
-      document.getElementById('related-products').classList.add('hidden');
-      document.getElementById('related-header').classList.add('hidden');
-      document.getElementById('product-detail').classList.add('hidden');
-    }
-  }
-
-  function openProductDetail(title) {
-    document.getElementById('main-product').classList.add('hidden');
-    document.getElementById('related-products').classList.add('hidden');
-    document.getElementById('related-header').classList.add('hidden');
-    document.getElementById('detail-title').textContent = title;
-    document.getElementById('product-detail').classList.remove('hidden');
+    const isMatch = value === 'leather wallet';
+    document.getElementById('main-product').classList.toggle('hidden', !isMatch);
+    document.getElementById('related-products').classList.toggle('hidden', !isMatch);
+    document.getElementById('related-header').classList.toggle('hidden', !isMatch);
   }
 </script>
 
