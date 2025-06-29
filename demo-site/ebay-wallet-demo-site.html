@@ -3,79 +3,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>eBay Demo - Sorted Related Products</title>
+  <title>eBay Demo - All-in-One</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
     .hidden { display: none; }
-    .product, .related-products { margin-top: 20px; }
+    .product, .related-products, .product-detail { margin-top: 20px; }
     .related-products { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; }
-    .related-item { border: 1px solid #ccc; padding: 10px; text-align: center; border-radius: 4px; box-shadow: 2px 2px 6px #eee; }
+    .related-item, .product-detail { border: 1px solid #ccc; padding: 10px; text-align: center; border-radius: 4px; box-shadow: 2px 2px 6px #eee; }
     .tag { background: gold; color: black; font-weight: bold; padding: 2px 5px; font-size: 12px; }
     .category, .price { font-size: 14px; color: #555; }
+    .message { color: #a00; font-style: italic; margin-top: 10px; }
   </style>
 </head>
 <body>
 
-<h1>eBay Demo - Wallet Search</h1>
+<h1>eBay Demo - Product Search</h1>
 <input id="search-bar" type="text" placeholder="Search for a product like 'Leather Wallet'" />
 <button onclick="performSearch()">Search</button>
 
-<!-- Main product -->
+<!-- Main product section -->
 <div id="main-product" class="product hidden">
-  <h2 id="product-title">Leather Wallet</h2>
-  <img src="https://via.placeholder.com/200x150?text=Wallet" alt="Leather Wallet" />
-  <p class="category">Category: Wallets</p>
-  <p class="price">Price: Rs. 5000.00</p>
+  <h2 id="product-title"></h2>
+  <img id="main-img" src="" alt="" />
+  <p class="category" id="main-category"></p>
+  <p class="price" id="main-price"></p>
 </div>
 
 <!-- Related products -->
 <h2 id="related-header" class="hidden">Best Seller Related Products</h2>
-<div id="related-products" class="related-products hidden">
-  <div class="related-item">
-    <p class="title">Black Classic Wallet</p>
-    <p class="category">Wallets</p>
-    <p class="price">Rs. 5200.00</p>
-    <span class="tag">Best Seller</span>
-  </div>
-  <div class="related-item">
-    <p class="title">Leather Chain Wallet</p>
-    <p class="category">Wallets</p>
-    <p class="price">Rs. 5100.00</p>
-    <span class="tag">Best Seller</span>
-  </div>
-  <div class="related-item">
-    <p class="title">Compact Travel Wallet</p>
-    <p class="category">Wallets</p>
-    <p class="price">Rs. 5000.00</p>
-    <span class="tag">Best Seller</span>
-  </div>
-  <div class="related-item">
-    <p class="title">Minimalist Wallet</p>
-    <p class="category">Wallets</p>
-    <p class="price">Rs. 4950.00</p>
-    <span class="tag">Best Seller</span>
-  </div>
-  <div class="related-item">
-    <p class="title">Zipper Wallet</p>
-    <p class="category">Wallets</p>
-    <p class="price">Rs. 4900.00</p>
-    <span class="tag">Best Seller</span>
-  </div>
-  <div class="related-item">
-    <p class="title">Brown Slim Wallet</p>
-    <p class="category">Wallets</p>
-    <p class="price">Rs. 4800.00</p>
-    <span class="tag">Best Seller</span>
-  </div>
+<div id="related-products" class="related-products hidden"></div>
+
+<!-- No related products message -->
+<p id="no-related-msg" class="message hidden">No related products available.</p>
+
+<!-- Detail view (TC07) -->
+<div id="product-detail" class="product-detail hidden">
+  <h2 id="detail-title"></h2>
+  <p>This is a simulated product detail view.</p>
 </div>
 
 <script>
   function performSearch() {
-    const value = document.getElementById('search-bar').value.trim().toLowerCase();
-    const isMatch = value === 'leather wallet';
-    document.getElementById('main-product').classList.toggle('hidden', !isMatch);
-    document.getElementById('related-products').classList.toggle('hidden', !isMatch);
-    document.getElementById('related-header').classList.toggle('hidden', !isMatch);
+    const query = document.getElementById('search-bar').value.trim().toLowerCase();
+
+    const mainProduct = document.getElementById('main-product');
+    const relatedProducts = document.getElementById('related-products');
+    const relatedHeader = document.getElementById('related-header');
+    const noRelatedMsg = document.getElementById('no-related-msg');
+    const detailView = document.getElementById('product-detail');
+    const productTitle = document.getElementById('product-title');
+    const productImg = document.getElementById('main-img');
+    const productCategory = document.getElementById('main-category');
+    const productPrice = document.getElementById('main-price');
+    const detailTitle = document.getElementById('detail-title');
+
+    // Reset all views
+    mainProduct.classList.add('hidden');
+    relatedProducts.classList.add('hidden');
+    relatedHeader.classList.add('hidden');
+    noRelatedMsg.classList.add('hidden');
+    detailView.classList.add('hidden');
+    relatedProducts.innerHTML = '';
+
+    if (query === 'leather wallet') {
+      productTitle.textContent = 'Leather Wallet';
+      productImg.src = 'https://via.placeholder.com/200x150?text=Wallet';
+      productImg.alt = 'Leather Wallet';
+      productCategory.textContent = 'Category: Wallets';
+      productPrice.textContent = 'Price: Rs. 5000.00';
+      mainProduct.classList.remove('hidden');
+
+      const items = [
+        { title: 'Black Classic Wallet', price: 5200 },
+        { title: 'Leather Chain Wallet', price: 5100 },
+        { title: 'Compact Travel Wallet', price: 5000 },
+        { title: 'Minimalist Wallet', price: 4950 },
+        { title: 'Zipper Wallet', price: 4900 },
+        { title: 'Brown Slim Wallet', price: 4800 }
+      ];
+
+      items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'related-item';
+        div.innerHTML = `
+          <p class="title">${item.title}</p>
+          <p class="category">Wallets</p>
+          <p class="price">Rs. ${item.price.toFixed(2)}</p>
+          <span class="tag">Best Seller</span>
+        `;
+        div.addEventListener('click', () => {
+          mainProduct.classList.add('hidden');
+          relatedProducts.classList.add('hidden');
+          relatedHeader.classList.add('hidden');
+          detailView.classList.remove('hidden');
+          detailTitle.textContent = item.title;
+        });
+        relatedProducts.appendChild(div);
+      });
+
+      relatedHeader.classList.remove('hidden');
+      relatedProducts.classList.remove('hidden');
+
+    } else if (query === 'luxury watch') {
+      productTitle.textContent = 'Luxury Watch';
+      productImg.src = 'https://via.placeholder.com/200x150?text=Watch';
+      productImg.alt = 'Luxury Watch';
+      productCategory.textContent = 'Category: Watches';
+      productPrice.textContent = 'Price: Rs. 15000.00';
+      mainProduct.classList.remove('hidden');
+      noRelatedMsg.classList.remove('hidden');
+    }
   }
 </script>
 
