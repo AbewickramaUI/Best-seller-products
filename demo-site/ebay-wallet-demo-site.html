@@ -83,6 +83,8 @@
     noRelatedMsg.classList.add('hidden');
     detailView.classList.add('hidden');
     relatedProducts.innerHTML = '';
+    const oldMsg = document.getElementById('broken-msg');
+    if (oldMsg) oldMsg.remove();
 
     if (window.location.hash.includes('#norelated')) {
       productTitle.textContent = 'No Product';
@@ -168,6 +170,46 @@
 
       renderRelatedItems(sortedLimited);
     }
+
+    else if (query === 'broken link product') {
+      productTitle.textContent = 'Broken Link Product';
+      productImg.src = 'https://via.placeholder.com/200x150?text=Broken+Product';
+      productImg.alt = 'Broken Link Product';
+      productCategory.textContent = 'Category: Wallets';
+      productPrice.textContent = 'Price: Rs. 4000.00';
+      mainProduct.classList.remove('hidden');
+
+      const brokenItem = {
+        title: 'Unavailable Bestseller',
+        price: 3999,
+        broken: true
+      };
+
+      const div = document.createElement('div');
+      div.className = 'related-item';
+      div.innerHTML = `
+        <p class="title">${brokenItem.title}</p>
+        <p class="category">Wallets</p>
+        <p class="price">Rs. ${brokenItem.price.toFixed(2)}</p>
+        <span class="tag">Best Seller</span>
+        <img src="https://via.placeholder.com/100x75?text=${encodeURIComponent(brokenItem.title)}" />
+      `;
+
+      div.addEventListener('click', () => {
+        mainProduct.classList.add('hidden');
+        relatedProducts.classList.add('hidden');
+        relatedHeader.classList.add('hidden');
+        const brokenMsg = document.createElement('p');
+        brokenMsg.id = 'broken-msg';
+        brokenMsg.className = 'message';
+        brokenMsg.textContent = 'Product temporarily unavailable';
+        document.body.appendChild(brokenMsg);
+      });
+
+      relatedProducts.appendChild(div);
+      relatedHeader.classList.remove('hidden');
+      relatedProducts.classList.remove('hidden');
+    }
   }
 
   function renderRelatedItems(items) {
@@ -215,4 +257,4 @@
 </script>
 
 </body>
-</html
+</html>
