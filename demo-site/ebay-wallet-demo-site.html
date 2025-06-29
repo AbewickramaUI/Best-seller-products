@@ -20,7 +20,8 @@
 
 <h1>eBay Demo - Product Search</h1>
 <input id="search-bar" type="text" placeholder="Search for a product like 'Leather Wallet'" />
-<button onclick="performSearch()">Search</button>
+<button id="search-button" onclick="performSearch()">Search</button>
+
 
 <div id="main-product" class="product hidden">
   <h2 id="product-title"></h2>
@@ -70,12 +71,12 @@
       mainProduct.classList.remove('hidden');
 
       const items = [
+		{ title: 'Brown Slim Wallet', price: 6000 },
         { title: 'Black Classic Wallet', price: 5200 },
         { title: 'Leather Chain Wallet', price: 5100 },
         { title: 'Compact Travel Wallet', price: 5000 },
         { title: 'Out of Stock Wallet', price: 4950, outOfStock: true }, // hidden intentionally
         { title: 'Zipper Wallet', price: 4900 },
-        { title: 'Brown Slim Wallet', price: 4800 }
       ];
 
       items.forEach(item => {
