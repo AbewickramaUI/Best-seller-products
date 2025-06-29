@@ -61,24 +61,26 @@
 <div id="product-detail" class="product-detail hidden">
   <h2 id="detail-title"></h2>
   <p>This is a simulated product detail view.</p>
+  <button id="back-button">Back to Product</button>
 </div>
 
 <script>
+  const mainProduct = document.getElementById('main-product');
+  const relatedProducts = document.getElementById('related-products');
+  const relatedHeader = document.getElementById('related-header');
+  const noRelatedMsg = document.getElementById('no-related-msg');
+  const detailView = document.getElementById('product-detail');
+  const productTitle = document.getElementById('product-title');
+  const productImg = document.getElementById('main-img');
+  const productCategory = document.getElementById('main-category');
+  const productPrice = document.getElementById('main-price');
+  const detailTitle = document.getElementById('detail-title');
+  const brokenMsg = document.getElementById('broken-msg');
+
   function performSearch() {
     const query = document.getElementById('search-bar').value.trim().toLowerCase();
-    const mainProduct = document.getElementById('main-product');
-    const relatedProducts = document.getElementById('related-products');
-    const relatedHeader = document.getElementById('related-header');
-    const noRelatedMsg = document.getElementById('no-related-msg');
-    const detailView = document.getElementById('product-detail');
-    const productTitle = document.getElementById('product-title');
-    const productImg = document.getElementById('main-img');
-    const productCategory = document.getElementById('main-category');
-    const productPrice = document.getElementById('main-price');
-    const detailTitle = document.getElementById('detail-title');
-    const brokenMsg = document.getElementById('broken-msg');
 
-    // Reset
+    // Reset views
     mainProduct.classList.add('hidden');
     relatedProducts.classList.add('hidden');
     relatedHeader.classList.add('hidden');
@@ -111,14 +113,12 @@
         { title: 'Out of Stock Wallet', price: 4950, outOfStock: true },
         { title: 'Zipper Wallet', price: 4900 },
       ];
-
       if (fallbackTest) {
         items.push(
           { title: '', price: 4800 },
           { title: 'Fallback Wallet', price: 4700, missingImage: true }
         );
       }
-
       renderRelatedItems(items);
     }
 
@@ -147,45 +147,6 @@
       }]);
     }
 
-    else if (query === 'broken link product') {
-      productTitle.textContent = 'Broken Link Product';
-      productImg.src = 'https://via.placeholder.com/200x150?text=Broken';
-      productImg.alt = 'Broken Link';
-      productCategory.textContent = 'Category: Wallets';
-      productPrice.textContent = 'Price: Rs. 5000.00';
-      mainProduct.classList.remove('hidden');
-
-      const items = [
-        {
-          title: 'Unavailable Bestseller',
-          price: 4999,
-          broken: true
-        }
-      ];
-
-      renderRelatedItems(items);
-    }
-
-    else if (query === 'duplicate wallet') {
-      productTitle.textContent = 'Duplicate Test Wallet';
-      productImg.src = 'https://via.placeholder.com/200x150?text=Wallet';
-      productImg.alt = 'Duplicate Wallet';
-      productCategory.textContent = 'Category: Wallets';
-      productPrice.textContent = 'Price: Rs. 4999.00';
-      mainProduct.classList.remove('hidden');
-
-      const items = [
-        { title: 'Alpha Wallet', price: 4999 },
-        { title: 'Bravo Wallet', price: 4999 },
-        { title: 'Alpha Wallet', price: 4999 },  // duplicate
-        { title: 'Charlie Wallet', price: 4999 },
-        { title: 'Bravo Wallet', price: 4999 },  // duplicate
-        { title: 'Delta Wallet', price: 4999 }
-      ];
-
-      renderRelatedItems(items);
-    }
-
     else if (window.location.hash.includes('#sameprice')) {
       productTitle.textContent = 'Alphabetical Price Test Wallet';
       productImg.src = 'https://via.placeholder.com/200x150?text=Test+Wallet';
@@ -203,23 +164,27 @@
         { title: 'Foxtrot Wallet', price: 4999 },
         { title: 'Zulu Wallet', price: 4999 },
       ];
-
       const sortedLimited = samePriceItems
         .sort((a, b) => a.title.localeCompare(b.title))
         .slice(0, 6);
-
       renderRelatedItems(sortedLimited);
+    }
+
+    else if (query === 'broken link product') {
+      productTitle.textContent = 'Broken Link Product';
+      productImg.src = 'https://via.placeholder.com/200x150?text=Broken+Link';
+      productImg.alt = 'Broken Link Product';
+      productCategory.textContent = 'Category: Wallets';
+      productPrice.textContent = 'Price: Rs. 5800.00';
+      mainProduct.classList.remove('hidden');
+
+      const items = [{ title: 'Unavailable Bestseller', price: 5799, broken: true }];
+      renderRelatedItems(items);
     }
   }
 
   function renderRelatedItems(items) {
-    const relatedProducts = document.getElementById('related-products');
-    const relatedHeader = document.getElementById('related-header');
-    const mainProduct = document.getElementById('main-product');
-    const detailView = document.getElementById('product-detail');
-    const detailTitle = document.getElementById('detail-title');
-    const brokenMsg = document.getElementById('broken-msg');
-
+    relatedProducts.innerHTML = '';
     items.forEach(item => {
       const div = document.createElement('div');
       div.className = 'related-item' + (item.outOfStock ? ' out-of-stock' : '');
@@ -260,6 +225,14 @@
     relatedHeader.classList.remove('hidden');
     relatedProducts.classList.remove('hidden');
   }
+
+  document.getElementById('back-button').addEventListener('click', () => {
+    detailView.classList.add('hidden');
+    brokenMsg.classList.add('hidden');
+    mainProduct.classList.remove('hidden');
+    relatedProducts.classList.remove('hidden');
+    relatedHeader.classList.remove('hidden');
+  });
 </script>
 
 </body>
