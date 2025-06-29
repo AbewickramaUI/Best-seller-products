@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>eBay Demo - All-in-One</title>
+  <title>eBay Demo - All Features with Out-of-Stock</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
     .hidden { display: none; }
@@ -12,6 +12,7 @@
     .related-item, .product-detail { border: 1px solid #ccc; padding: 10px; text-align: center; border-radius: 4px; box-shadow: 2px 2px 6px #eee; }
     .tag { background: gold; color: black; font-weight: bold; padding: 2px 5px; font-size: 12px; }
     .category, .price { font-size: 14px; color: #555; }
+    .out-of-stock { display: none; }
     .message { color: #a00; font-style: italic; margin-top: 10px; }
   </style>
 </head>
@@ -21,7 +22,6 @@
 <input id="search-bar" type="text" placeholder="Search for a product like 'Leather Wallet'" />
 <button onclick="performSearch()">Search</button>
 
-<!-- Main product section -->
 <div id="main-product" class="product hidden">
   <h2 id="product-title"></h2>
   <img id="main-img" src="" alt="" />
@@ -29,14 +29,11 @@
   <p class="price" id="main-price"></p>
 </div>
 
-<!-- Related products -->
 <h2 id="related-header" class="hidden">Best Seller Related Products</h2>
 <div id="related-products" class="related-products hidden"></div>
 
-<!-- No related products message -->
 <p id="no-related-msg" class="message hidden">No related products available.</p>
 
-<!-- Detail view (TC07) -->
 <div id="product-detail" class="product-detail hidden">
   <h2 id="detail-title"></h2>
   <p>This is a simulated product detail view.</p>
@@ -57,7 +54,6 @@
     const productPrice = document.getElementById('main-price');
     const detailTitle = document.getElementById('detail-title');
 
-    // Reset all views
     mainProduct.classList.add('hidden');
     relatedProducts.classList.add('hidden');
     relatedHeader.classList.add('hidden');
@@ -77,14 +73,14 @@
         { title: 'Black Classic Wallet', price: 5200 },
         { title: 'Leather Chain Wallet', price: 5100 },
         { title: 'Compact Travel Wallet', price: 5000 },
-        { title: 'Minimalist Wallet', price: 4950 },
+        { title: 'Out of Stock Wallet', price: 4950, outOfStock: true }, // hidden intentionally
         { title: 'Zipper Wallet', price: 4900 },
         { title: 'Brown Slim Wallet', price: 4800 }
       ];
 
       items.forEach(item => {
         const div = document.createElement('div');
-        div.className = 'related-item';
+        div.className = 'related-item' + (item.outOfStock ? ' out-of-stock' : '');
         div.innerHTML = `
           <p class="title">${item.title}</p>
           <p class="category">Wallets</p>
