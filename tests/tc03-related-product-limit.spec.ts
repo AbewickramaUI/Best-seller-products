@@ -7,14 +7,14 @@ test('TC03 - Validate max limit of 6 related products', async ({ page }) => {
 
   await page.goto(fileUrl);
 
-  // Step 1: Trigger the main product search
+  // Trigger the main product search
   await page.fill('#search-bar', 'Leather Wallet');
   await page.click('button');
 
-  // Step 2: Verify the related products are visible
+  // Verify the related products are visible
   await expect(page.locator('#related-products')).toBeVisible();
 
-  // Step 3: Ensure only 6 related products are shown in the list
+  // Ensure only 6 related products are shown in the list
   const relatedItems = page.locator('.related-item');
   await expect(relatedItems).toHaveCount(6);
 });
