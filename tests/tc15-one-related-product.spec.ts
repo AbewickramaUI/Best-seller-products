@@ -6,7 +6,7 @@ test('TC15 - Verify the behaviour when there is only 1 related product', async (
   await page.goto('file://' + filePath);
 
   // Search for the product that only has 1 related item
-  await page.fill('#search-bar', 'Luxury Watch');
+  await page.fill('#search-bar', 'silver watch');
   await page.click('#search-button');
 
   const relatedItems = page.locator('.related-item');

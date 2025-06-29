@@ -21,6 +21,7 @@
       text-align: center;
       border-radius: 4px;
       box-shadow: 2px 2px 6px #eee;
+      word-wrap: break-word;
     }
     .tag {
       background: gold;
@@ -79,7 +80,7 @@
       const productPrice = document.getElementById('main-price');
       const detailTitle = document.getElementById('detail-title');
 
-      // Reset all views
+      // Reset view
       mainProduct.classList.add('hidden');
       relatedProducts.classList.add('hidden');
       relatedHeader.classList.add('hidden');
@@ -87,13 +88,9 @@
       detailView.classList.add('hidden');
       relatedProducts.innerHTML = '';
 
-      // ✅ Special hash for TC09
+      // Special condition for TC09
       if (window.location.hash.includes('#norelated')) {
         productTitle.textContent = 'No Product';
-        productImg.src = '';
-        productImg.alt = '';
-        productCategory.textContent = '';
-        productPrice.textContent = '';
         mainProduct.classList.remove('hidden');
         noRelatedMsg.classList.remove('hidden');
         return;
@@ -120,7 +117,7 @@
 
         if (fallbackTest) {
           items.push(
-            { title: '', price: 4800 }, // missing name
+            { title: '', price: 4800 },
             { title: 'Fallback Wallet', price: 4700, missingImage: true }
           );
         }
@@ -159,13 +156,14 @@
 
         relatedHeader.classList.remove('hidden');
         relatedProducts.classList.remove('hidden');
+      }
 
-      } else if (query === 'luxury watch') {
-        productTitle.textContent = 'Luxury Watch';
+      else if (query === 'silver watch') {
+        productTitle.textContent = 'Silver Watch';
         productImg.src = 'https://via.placeholder.com/200x150?text=Watch';
-        productImg.alt = 'Luxury Watch';
+        productImg.alt = 'Silver Watch';
         productCategory.textContent = 'Category: Watches';
-        productPrice.textContent = 'Price: Rs. 15000.00';
+        productPrice.textContent = 'Price: Rs. 14900.00';
         mainProduct.classList.remove('hidden');
 
         const item = {
@@ -178,6 +176,42 @@
         div.innerHTML = `
           <p class="title">${item.title}</p>
           <p class="category">Watches</p>
+          <p class="price">Rs. ${item.price.toFixed(2)}</p>
+          <span class="tag">Best Seller</span>
+          <img src="https://via.placeholder.com/100x75?text=${encodeURIComponent(item.title)}" />
+        `;
+
+        div.addEventListener('click', () => {
+          mainProduct.classList.add('hidden');
+          relatedProducts.classList.add('hidden');
+          relatedHeader.classList.add('hidden');
+          detailView.classList.remove('hidden');
+          detailTitle.textContent = item.title;
+        });
+
+        relatedProducts.appendChild(div);
+        relatedHeader.classList.remove('hidden');
+        relatedProducts.classList.remove('hidden');
+      }
+
+      else if (query === 'long title wallet') {
+        productTitle.textContent = 'Long Title Wallet';
+        productImg.src = 'https://via.placeholder.com/200x150?text=Long+Wallet';
+        productImg.alt = 'Long Title Wallet';
+        productCategory.textContent = 'Category: Wallets';
+        productPrice.textContent = 'Price: Rs. 5500.00';
+        mainProduct.classList.remove('hidden');
+
+        const item = {
+          title: 'Premium Black Leather Wallet with RFID Protection and Ultra-Durable Stitching',
+          price: 5499
+        };
+
+        const div = document.createElement('div');
+        div.className = 'related-item';
+        div.innerHTML = `
+          <p class="title">${item.title}</p>
+          <p class="category">Wallets</p>
           <p class="price">Rs. ${item.price.toFixed(2)}</p>
           <span class="tag">Best Seller</span>
           <img src="https://via.placeholder.com/100x75?text=${encodeURIComponent(item.title)}" />
